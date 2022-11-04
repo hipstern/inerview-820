@@ -1,0 +1,5 @@
+# High resource configuration
+
+resources:
+  memory: 512Mi
+  cpu: 2

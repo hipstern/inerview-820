@@ -1,0 +1,5 @@
+# Ingress/LB configuration
+
+ingress:
+  enabled: true
+  type: LoadBalancer

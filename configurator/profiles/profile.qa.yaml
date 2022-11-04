@@ -1,0 +1,5 @@
+# QA environment
+
+configs:
+  - debug
+  - tls

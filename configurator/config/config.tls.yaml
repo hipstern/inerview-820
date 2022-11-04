@@ -1,0 +1,7 @@
+# TLS configuration
+
+tls:
+  enabled: true
+  domains:
+    - trumid.com
+    - trumid.eu

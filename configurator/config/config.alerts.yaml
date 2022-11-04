@@ -1,0 +1,4 @@
+# Alerts configuration
+
+alerts:
+  enabled: true
