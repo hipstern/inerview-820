@@ -1,7 +1,0 @@
-# QA specific configuration
-
-database:
-  host: qa.db.rds.internal
-  credentials:
-    username: qa
-    password: Secret12345!

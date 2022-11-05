@@ -1,6 +1,0 @@
-# Production environment
-
-configs:
-  - alerts
-  - resources.high
-  - tls

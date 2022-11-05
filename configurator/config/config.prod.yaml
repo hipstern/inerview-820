@@ -1,7 +1,0 @@
-# Production specific configuration
-
-database:
-  host: prod.db.rds.internal
-  credentials:
-    username: qa
-    password: Secret12345!

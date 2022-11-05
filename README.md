@@ -1,14 +1,33 @@
-# Interview Questions
+# "Pine" Archiver
+## Issue
 
-These questions are made to allow a candidate to demonstrate their ability and comfort level in writing scripts and programs that may be similar in spirit to actual work they will be assigned to while working as a team member.
+We have an application named "Pine".
+"Pine" runs in a kubernetes cloud inside a pod
 
-These are meant to be fairly general, vague and open-ended such that the candidate has freedom to decide how to approach, design and implement them based on their abilities, skill set and preferred methods.
+As "Pine" serves traffic, it produces various logs and reports as files that must be archived in remote storage.
 
-## Notes to candidate
+## Requirements
 
-- Please use the programming language of your choice.
-- You can use any IDE or setup.
-- Feel free to use a search engine or any other online resource as needed.
-- Please put emphasis on communication with the interviewer as you are working.
-- Make sure to ask as many questions as needed.
-- Once the problem is clear, walk the interviewer through the proposed plan prior to any implementation.
+Write a program that will:
+
+- Watch over some directories and will handle files that match certain criteria.
+- The program should upload and archive them to remote storage.
+- The output of the program should be a summary of all files processed.
+- The program should be containerized so that it could be implemented as a side car to "Pine".
+
+## Assumptions
+
+- Any tool needed can be added to the executor.
+
+## Additional Features
+
+- Files should be placed into a remote folder composed of the current date (e.g. s3://my-bucket/2022/01/01).
+- The program should be able to run continuously.
+- The program should be able to handle upload failures.
+- The program should be able to process files serially but ideally with concurrency and in a batching fashion.
+
+## Considerations
+
+- Program flow and outline
+- Testability
+- Error handling

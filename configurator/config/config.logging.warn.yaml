@@ -1,4 +1,0 @@
-# Logging configuration
-
-logging:
-  level: warn
