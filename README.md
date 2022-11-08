@@ -43,7 +43,10 @@ But maybe I just want want to use off-the-shelf software as much as possible.
 That's the only reasoning that feels satisfying to me, so I'll use it as my justification.
 
 ## Share FS
-My initial thought was a `PV`, but it turns out you can just [share the whole filesystem](https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/), so I guess I'm doing that to avoid requiring "pine" to use a PV / EmptyDir / whatever, since I don't know anything about it.
+~~My initial thought was a `PV`, but it turns out you can just [share the whole filesystem](https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/), so I guess I'm doing that to avoid requiring "pine" to use a PV / EmptyDir / whatever, since I don't know anything about it.~~
+
+After further research, I was off base (that technically works, but the PID of the target pod doesn't look like it's deterministic?).
+Anyway, back to `emptyDir` and assuming there's some directory these files go in (it could be a couple, but it's one `emptyDir` per, so... not many).
 
 ## Where am I archiving to?
 The example mentions S3, but I don't wanna do that, because I don't have a personal AWS account.
@@ -56,6 +59,9 @@ I like SFTP, I've used ... some python library for it before, let's go with that
 I asked Google.
 Google gave me [this](https://gist.github.com/jujhars13/1e99cf110e5df39d4ae3c7fef81589f8).
 Sure.
+
+Getting this to actually work was a bear, mainly because I didn't read the docs well enough, and was testing via `lftp`, whose docs I *also* didn't read well enough.
+So that was fun.
 
 ## When do I archive a file?
 It's unclear, but it looks like I'm supposed to expect completed files, not a file that gets continually written to (so the application can move finished files to some directory for upload but can't upload them itself?).

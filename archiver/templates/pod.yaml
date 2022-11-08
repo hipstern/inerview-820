@@ -3,8 +3,39 @@ kind: Pod
 metadata:
   name: pine
 spec:
+  volumes:
+    - name: log-data
+      emptyDir: {}
   containers:
     - name: pine
-      image: pine:latest
+      #image: pine:latest
+      image: alpine:latest
       ports:
         - containerPort: 80
+      volumeMounts:
+        - name: log-data
+          mountPath: {{ .Values.pine.reportDir }}
+      args: ["sleep", "5000"]
+    - name: archiver
+      # I like bash
+      image: frolvlad/alpine-bash
+      volumeMounts:
+        - name: log-data
+          mountPath: /logs
+      command: ["/bin/bash", "-c"]
+      # lftp sftp://archive:changeme@sftp -e 'set sftp:auto-confirm yes; put -O 2022/11/07 testpants; bye'
+      # https://lftp.yar.ru/lftp-man.html
+      args:
+        - |
+          # validated by shellcheck
+          apk add openssh lftp
+          while :; do
+            lftp "sftp://{{ .Values.sftp.user }}:{{ .Values.sftp.password }}@sftp" --Remove-source-files -e \
+              'set sftp:auto-confirm yes; mirror -R -O {{ now | date "2006/01/02" }}
+                {{- range $regex := .Values.pine.fileRegexes }}
+                  -i /logs/{{ $regex }}
+                {{- end }}
+              '
+          done
+
+
