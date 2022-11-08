@@ -1,0 +1,11 @@
+# https://gitlab.com/-/snippets/2036704
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sftp-config
+stringData:
+  # user:pass[:e][:uid[:gid[:dir1[,dir2]...]]
+  users.conf: "archive:{{ .Values.sftp.password }}:1000:1000:{{ now | date "2006/01/02" }}"
+  # should this live longer than 1 day? not for this.
+  # It easily could with a cronjob that creates the next day in advance
+  # https://github.com/atmoz/sftp#execute-custom-scripts-or-applications

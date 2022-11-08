@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "test_chart.fullname" . }}
+  labels:
+    {{- include "test_chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.sftp.replicaCount }}
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: sftp
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/sftp: runtime/default
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/component: sftp
+
+    spec:
+      containers:
+        #the sftp server itself
+        - name: sftp
+          image: {{ .Values.sftp.image }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 22
+          securityContext:
+            capabilities:
+              add: ["SYS_ADMIN"]
+          volumeMounts:
+            - mountPath: "/etc/sftp"
+              name: sftp-config
+              readOnly: true
+      volumes:
+        - name: sftp-config
+          secret:
+            secretName: sftp-config
