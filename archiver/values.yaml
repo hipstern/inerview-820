@@ -1,0 +1,27 @@
+# Default values for test_chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+sftp:
+  # https://hub.docker.com/r/atmoz/sftp
+  image: atmoz/sftp:latest
+  replicaCount: 1
+  type: ClusterIP
+  port: 22
+  user: archive
+  password: changeme
+  # if I wanted this to last, I'd make a PV here, but I spent over an hour
+  # being stupid and not understanding how the directory creation worked
+  # https://github.com/atmoz/sftp/issues/16
+  # so... ephemeral.
+
+pine:
+  reportDir: /data/logs
+  fileRegexes:
+    - '.*\.log'
+    - '.*\.out'
